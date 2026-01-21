@@ -139,6 +139,12 @@ func NewApplication() *Application {
 	}
 }
 
+// This is likely an unwise hack. I was using tview and needed to know the width of the terminal to know how to organise how many elements should go on a row.
+// I have forked tview to add this. One day I may find a better way.
+func (a *Application) Size() (width, height int) {
+	return a.screen.Size()
+}
+
 // SetInputCapture sets a function which captures all key events before they are
 // forwarded to the key event handler of the primitive which currently has
 // focus. This function can then choose to forward that key event (or a
@@ -677,7 +683,7 @@ func (a *Application) Suspend(f func()) bool {
 // buffer. It is almost never necessary to call this function. It can actually
 // deadlock your application if you call it from the main thread (e.g. in a
 // callback function of a widget). Please see
-// https://github.com/rivo/tview/wiki/Concurrency for details.
+// https://github.com/fmstephe/tview/wiki/Concurrency for details.
 func (a *Application) Draw() *Application {
 	a.QueueUpdate(func() {
 		a.draw()
